@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#075e54"><title>AWAN FAMILY</title>
+<style>
+:root{--g:#075e54;--g2:#00a884;--bg:#fff;--fg:#111b21;--card:#f0f2f5;--line:#e9edef;--muted:#667781;--bub:#fff;--mine:#d9fdd3;--chatbg:#efeae2;--fs:15px}
+body.dark{--bg:#111b21;--fg:#e9edef;--card:#202c33;--line:#222d34;--muted:#8696a0;--bub:#202c33;--mine:#005c4b;--chatbg:#0b141a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:#cfd8d4;color:var(--fg);font-family:system-ui,Arial,sans-serif}
+.app{max-width:560px;height:100dvh;margin:auto;background:var(--bg);display:flex;flex-direction:column;position:relative;overflow:hidden}
+button{font:inherit;cursor:pointer}input,textarea{font:inherit;color:var(--fg)}.hidden{display:none!important}
+header{background:var(--g);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;padding-top:calc(12px + env(safe-area-inset-top))}
+body.dark header{background:#202c33}.brand{font-size:21px;font-weight:700}
+main{flex:1;overflow:auto}.screen{display:none}.screen.active{display:block}
+.search{padding:8px 12px}.search input,.field{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);outline:none;font-size:15px}.search input{border:0;border-radius:22px}
+.row{display:flex;align-items:center;gap:13px;padding:11px 16px;cursor:pointer;user-select:none}.row:active{background:var(--card)}
+.avatar{width:48px;height:48px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;background:#6a7175 center/cover;color:#fff;font-weight:600;font-size:20px}.avatar.ring{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--g2)}.avatar.seen{box-shadow:0 0 0 2px var(--bg),0 0 0 4px #8696a0}
+.info{flex:1;min-width:0;border-bottom:1px solid var(--line);padding-bottom:10px}.info b{display:flex;justify-content:space-between;font-weight:500;font-size:16px}.info small{display:block;color:var(--muted);font-size:13.5px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.time{font-size:12px;color:var(--muted);font-weight:400}.badge{background:var(--g2);color:#fff;border-radius:11px;min-width:21px;padding:2px 6px;font-size:12px;text-align:center}
+.bottom{display:flex;border-top:1px solid var(--line);background:var(--bg);padding-bottom:env(safe-area-inset-bottom)}.bottom button{flex:1;border:0;background:none;color:var(--muted);padding:8px 0 6px;font-size:11.5px}.bottom button span{display:block;font-size:20px}.bottom button.active{color:var(--g2);font-weight:700}
+.fab{position:absolute;right:18px;bottom:calc(76px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:16px;border:0;background:var(--g2);color:#fff;font-size:24px;box-shadow:0 3px 8px #0004;z-index:3}
+.primary,.secondary{width:100%;padding:13px;border:0;border-radius:24px;font-weight:600;margin-top:10px}.primary{background:var(--g2);color:#fff}.secondary{background:var(--card);color:var(--fg)}
+.hint{font-size:13px;color:var(--muted);line-height:1.6;text-align:center;padding:12px}.empty{text-align:center;color:var(--muted);padding:40px 24px;line-height:1.7}
+.auth{padding:28px 22px;overflow:auto;text-align:center}.auth h2{color:var(--g2)}
+.tabs2{display:flex;border-radius:24px;overflow:hidden;background:var(--card);margin:14px 0}.tabs2 button{flex:1;padding:11px;border:0;background:none;color:var(--muted)}.tabs2 button.active{background:var(--g2);color:#fff}
+.chat{display:none;position:absolute;inset:0;z-index:5;background:var(--chatbg);flex-direction:column}.chat.show{display:flex}
+.chathead{display:flex;align-items:center;gap:8px;padding:9px 6px;padding-top:calc(9px + env(safe-area-inset-top));background:var(--g);color:#fff}body.dark .chathead{background:#202c33}.chathead button{border:0;background:none;color:#fff;font-size:21px;padding:4px 7px}.chathead .avatar{width:40px;height:40px;font-size:17px}
+.chatbody{flex:1;overflow:auto;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.bubble{max-width:80%;padding:7px 10px 5px;border-radius:9px;background:var(--bub);align-self:flex-start;line-height:1.45;word-break:break-word;font-size:var(--fs);white-space:pre-wrap;box-shadow:0 1px 1px #0002;user-select:none;-webkit-touch-callout:none}.bubble.mine{background:var(--mine);align-self:flex-end}.bubble.del{font-style:italic;color:var(--muted)}
+.bubble small{display:block;text-align:right;font-size:11px;color:var(--muted);margin-top:2px;white-space:normal}.tick.seen{color:#53bdeb}.lock{align-self:center;background:#fff3c4;color:#54442b;font-size:12px;padding:6px 12px;border-radius:8px;margin:6px 0;text-align:center;max-width:90%}body.dark .lock{background:#182229;color:#ffd279}
+.composer{display:flex;gap:8px;padding:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}.composer input{flex:1;border:0;border-radius:24px;padding:12px 16px;background:var(--bg);outline:none}.composer button{width:46px;height:46px;border-radius:50%;border:0;background:var(--g2);color:#fff;font-size:18px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;gap:10px;cursor:pointer}.item:active{background:var(--card)}.item small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px;white-space:pre-wrap}.item .ic{width:34px;font-size:20px}
+.set h4,.pg h4{margin:0;padding:16px 16px 6px;color:var(--g2);font-size:13px;text-transform:uppercase}
+.sw{width:40px;height:22px;border-radius:11px;background:#8696a0;position:relative;flex-shrink:0}.sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.15s}.sw.on{background:var(--g2)}.sw.on::after{left:20px}
+.profile{display:flex;gap:14px;align-items:center;padding:16px;border-bottom:1px solid var(--line);cursor:pointer}.profile .avatar{width:64px;height:64px;font-size:28px}
+.overlay{display:none;position:absolute;inset:0;z-index:20;background:#111;color:#fff;align-items:center;justify-content:center;flex-direction:column}.overlay.show{display:flex}
+.page{display:none;position:absolute;inset:0;z-index:8;background:var(--bg);flex-direction:column}.page.show{display:flex}.page .ph{display:flex;align-items:center;gap:12px;padding:12px 10px;padding-top:calc(12px + env(safe-area-inset-top));background:var(--g);color:#fff;font-size:19px}body.dark .page .ph{background:#202c33}.page .ph button{border:0;background:none;color:#fff;font-size:24px}.page .pb{flex:1;overflow:auto}
+#dlg,#sheet{display:none;position:absolute;inset:0;z-index:40;background:#0008}#dlg.show{display:flex;align-items:center;justify-content:center}#sheet.show{display:flex;align-items:flex-end}
+.box{background:var(--bg);width:86%;border-radius:18px;padding:22px 20px 12px}.box h3{margin:0 0 8px}.box p{margin:0 0 12px;color:var(--muted);line-height:1.5;white-space:pre-wrap;font-size:14.5px}.btns{display:flex;justify-content:flex-end;gap:6px;margin-top:10px}.btns button{border:0;background:none;color:var(--g2);font-weight:700;padding:10px 14px;font-size:15px}
+.sh{background:var(--bg);width:100%;border-radius:20px 20px 0 0;padding:10px 0 calc(14px + env(safe-area-inset-bottom));max-height:80%;overflow:auto}.sh h3{margin:0;padding:10px 18px;font-size:15px;color:var(--muted)}
+#toast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:#323232;color:#fff;padding:10px 16px;border-radius:20px;font-size:14px;z-index:50;display:none;max-width:85%;text-align:center}
+#stView{display:none;position:absolute;inset:0;z-index:30;color:#fff;flex-direction:column}#stView.show{display:flex}#stBar{display:flex;gap:3px;padding:10px 8px 4px;padding-top:calc(10px + env(safe-area-inset-top))}#stBar i{flex:1;height:3px;background:#fff5;border-radius:2px;overflow:hidden}#stBar i b{display:block;height:100%;width:0;background:#fff}
+</style>
+</head>
+<body><div class="app">
+<header><div class="brand" id="barTitle">AWAN FAMILY</div><span style="font-size:13px;opacity:.85">🔒</span></header>
+
+<section id="splash" class="screen active"><div class="empty" style="padding-top:35vh"><div style="font-size:56px">💬</div>AWAN FAMILY</div></section>
+<section id="loginScreen" class="screen auth">
+ <div style="font-size:56px">💬</div><h2>AWAN FAMILY</h2>
+ <div class="tabs2"><button id="loginMode" class="active" onclick="setAuthMode('login')">Log in</button><button id="signupMode" onclick="setAuthMode('signup')">Sign up</button></div>
+ <input id="username" class="field" placeholder="Username (e.g. wasif786)" autocomplete="username" autocapitalize="none">
+ <input id="password" class="field" type="password" placeholder="Password (min 8 characters)" autocomplete="current-password" style="margin-top:9px">
+ <input id="confirmPassword" class="field signup-only hidden" type="password" placeholder="Confirm password" style="margin-top:9px">
+ <input id="signupJoinCode" class="field signup-only hidden" placeholder="Family join code" style="margin-top:9px">
+ <button class="primary" id="authAction" onclick="submitAuth()">Log in</button>
+ <div id="loginMsg" class="hint">Private family messenger. Signing up needs the family join code.</div>
+</section>
+<section id="joinScreen" class="screen auth">
+ <h2>Complete your profile</h2><p class="hint">Enter your name, phone number and the family join code.</p>
+ <input id="joinName" class="field" placeholder="Your full name">
+ <input id="joinPhone" class="field" placeholder="+92… phone number" style="margin-top:9px">
+ <input id="joinCode" class="field" placeholder="Family join code" style="margin-top:9px">
+ <button class="primary" onclick="completeJoin()">Join family</button><div id="joinMsg" class="hint"></div><button class="secondary" onclick="logout()">Log out</button>
+</section>
+<section id="blockedScreen" class="screen"><div class="empty"><div style="font-size:48px">🔒</div><b>Your account is not approved.</b><br>Contact the admin.<button class="secondary" onclick="logout()">Log out</button></div></section>
+
+<div id="mainScreen" style="display:none;flex:1;min-height:0;flex-direction:column">
+ <div id="searchWrap" class="search"><input id="chatSearch" placeholder="Search chats" oninput="renderChats()"></div>
+ <main>
+  <section id="chats" class="screen active"><div id="chatList"></div></section>
+  <section id="updates" class="screen"><div id="updList"></div></section>
+  <section id="calls" class="screen"><div id="callList"></div></section>
+  <section id="contacts" class="screen"><div class="search"><input id="contactSearch" placeholder="Search name or number" oninput="renderContacts()"></div><div id="contactList"></div></section>
+  <section id="settings" class="screen"><div id="settingsBox"></div></section>
+ </main>
+ <button class="fab" id="fab" onclick="fabAct()">✉</button>
+ <div class="bottom"><button data-t="chats" class="active" onclick="tab('chats')"><span>💬</span>Chats</button><button data-t="updates" onclick="tab('updates')"><span>⭕</span>Updates</button><button data-t="calls" onclick="tab('calls')"><span>📞</span>Calls</button><button data-t="contacts" onclick="tab('contacts')"><span>👥</span>Contacts</button><button data-t="settings" onclick="tab('settings')"><span>⚙️</span>Settings</button></div>
+</div>
+
+<div id="chatView" class="chat"><div class="chathead"><button onclick="closeChat()">‹</button><div id="chatAv"></div><div style="flex:1;min-width:0;cursor:pointer" onclick="chatMenu()"><b id="chatTitle"></b><div id="peerStat" style="font-size:12px;opacity:.85;min-height:14px"></div></div><button onclick="startCall('video')">🎥</button><button onclick="startCall('audio')">📞</button><button onclick="chatMenu()">⋮</button></div><div id="chatBody" class="chatbody"></div><div class="composer"><input id="messageInput" placeholder="Message" autocomplete="off" onkeydown="if(event.key==='Enter'&&S.enter)sendMessage()"><button onclick="sendMessage()">➤</button></div></div>
+<div id="page" class="page"><div class="ph"><button onclick="closePage()">←</button><span id="pageTitle"></span></div><div class="pb" id="pageBody"></div></div>
+<div id="callView" class="overlay"><div id="callInfo" style="margin:10px;font-size:18px"></div><video id="remoteVid" autoplay playsinline style="width:100%;max-height:60%;background:#000"></video><video id="localVid" autoplay playsinline muted style="width:110px;position:absolute;top:10px;right:10px;border-radius:8px"></video><div style="display:flex;gap:14px;margin:18px"><button id="acceptBtn" class="primary hidden" style="width:auto;padding:13px 24px" onclick="answerCall()">Accept</button><button class="primary" style="width:auto;padding:13px 24px;background:#e53935" onclick="endCall()">End</button></div></div>
+<div id="stView"><div id="stBar"></div><div style="display:flex;align-items:center;gap:10px;padding:6px 12px"><div id="stAv"></div><div style="flex:1"><b id="stName"></b><div id="stTime" style="font-size:12px;opacity:.8"></div></div><button id="stDel" class="hidden" style="background:none;border:0;color:#fff;font-size:20px" onclick="stDelete()">🗑</button><button style="background:none;border:0;color:#fff;font-size:24px" onclick="stClose()">✕</button></div><div id="stBody" style="flex:1;display:grid;place-items:center;text-align:center;padding:20px;font-size:26px;position:relative;overflow:hidden" onclick="stTap(event)"></div></div>
+<div id="dlg"></div><div id="sheet"></div><div id="toast"></div>
+<input id="restoreFile" type="file" accept=".awanbackup" class="hidden" onchange="restoreBackup(event)"><input id="imgFile" type="file" accept="image/*" class="hidden">
+</div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc,collection,query,where,onSnapshot,addDoc,updateDoc,deleteDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyDLEn8d5xqfEKKpbubH0k5KsCf7Nb_OgIM",authDomain:"awan-family-ec23b.firebaseapp.com",projectId:"awan-family-ec23b",storageBucket:"awan-family-ec23b.firebasestorage.app",messagingSenderId:"446268995535",appId:"1:446268995535:web:11b19c4c533dcf82b804ba"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let user=null,profile=null,members=[],chats=[],statuses=[],activeChat=null,chatStop=null,memberStop=null,stStop=null,ringStop=null,presStop=null,signupInProgress=false,started=false,myKeys=null,watchers={};
+const lastTxt={},unread={},seenAt={},keyCache={},peerPres={};
+// ---------- settings (kept on this device) ----------
+const S=Object.assign({theme:'system',font:15,enter:false,sound:true,vibrate:true,preview:true,receipts:true,lastSeen:'everyone',wall:0,blocked:[],freq:'never',lastBackup:0,lowData:false},JSON.parse(localStorage.getItem('awanSettings')||'{}'));
+window.S=S;
+const WALLS=[['Default',''],['Mint','#d4ebe0'],['Sand','#eadfc8'],['Sky','#d3e6f3'],['Rose','#f3d9df'],['Night','#0b141a']];
+function saveS(){localStorage.setItem('awanSettings',JSON.stringify(S));applyS()}
+function applyS(){const dark=S.theme==='dark'||(S.theme==='system'&&matchMedia('(prefers-color-scheme:dark)').matches),r=document.documentElement.style;document.body.classList.toggle('dark',dark);r.setProperty('--fs',S.font+'px');if(S.wall)r.setProperty('--chatbg',WALLS[S.wall][1]);else r.removeProperty('--chatbg')}
+applyS();
+// ---------- dialogs ----------
+let tt;function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(tt);tt=setTimeout(()=>t.style.display='none',2600)}
+function ask(title,text,o={}){return new Promise(res=>{const d=$('dlg');d.innerHTML=`<div class="box"><h3>${esc(title)}</h3><p>${esc(text||'')}</p>${o.input?`<input id="dlgIn" class="field" type="${o.type||'text'}" value="${esc(o.value||'')}" placeholder="${esc(o.ph||'')}">`:''}<div class="btns">${o.cancel===false?'':`<button id="dlgNo">${esc(o.cancelText||'Cancel')}</button>`}<button id="dlgYes" style="${o.danger?'color:#e53935':''}">${esc(o.ok||'OK')}</button></div></div>`;d.classList.add('show');const fin=v=>{d.classList.remove('show');res(v)};$('dlgYes').onclick=()=>fin(o.input?$('dlgIn').value:true);if($('dlgNo'))$('dlgNo').onclick=()=>fin(o.input?null:false);if(o.input)$('dlgIn').focus()})}
+function pick(title,opts){return new Promise(res=>{const o=$('sheet');o.innerHTML=`<div class="sh"><h3>${esc(title)}</h3>${opts.map((x,i)=>`<div class="item" data-i="${i}" style="${x.danger?'color:#e53935':''}">${esc(x.l)}</div>`).join('')}</div>`;o.classList.add('show');o.onclick=e=>{const it=e.target.closest('[data-i]');o.classList.remove('show');res(it?opts[it.dataset.i].v:null)}})}
+// ---------- local database (all chats live on this device) ----------
+function openLocal(){return new Promise((res,rej)=>{const r=indexedDB.open('awan-family-local-v1',3);r.onupgradeneeded=()=>{const d=r.result;for(const n of ['messages','chats','keys','calls'])if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:'id'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function localOp(store,mode,fn){const d=await openLocal();return new Promise((res,rej)=>{const t=d.transaction(store,mode),r=fn(t.objectStore(store));t.oncomplete=()=>{d.close();res(r&&r.result)};t.onerror=()=>rej(t.error)})}
+const localPut=(s,v)=>localOp(s,'readwrite',o=>o.put(v)),localAll=s=>localOp(s,'readonly',o=>o.getAll()),localGet=(s,k)=>localOp(s,'readonly',o=>o.get(k)),localDel=(s,k)=>localOp(s,'readwrite',o=>o.delete(k)),localClear=s=>localOp(s,'readwrite',o=>o.clear());
+function show(id){['splash','loginScreen','joinScreen','blockedScreen','mainScreen'].forEach(k=>{$(k).style.display=k===id?(k==='mainScreen'?'flex':'block'):'none'})}
+// ---------- auth (stays logged in) ----------
+let authMode='login';
+const toEmail=n=>n.toLowerCase()+'@awan-family.app',validUser=n=>/^[a-z0-9][a-z0-9._]{3,19}$/.test(n);
+window.setAuthMode=m=>{authMode=m;$('loginMode').classList.toggle('active',m==='login');$('signupMode').classList.toggle('active',m==='signup');$('authAction').textContent=m==='login'?'Log in':'Create account';document.querySelectorAll('.signup-only').forEach(e=>e.classList.toggle('hidden',m!=='signup'));$('loginMsg').textContent=m==='login'?'Log in with your username and password.':'Choose a username and password, then enter the family join code.'};
+const cacheProfile=()=>localStorage.setItem('awanProfile',JSON.stringify({uid:user.uid,p:{...profile,createdAt:null}}));
+window.submitAuth=async()=>{
+ const username=$('username').value.trim().toLowerCase(),password=$('password').value,msg=t=>$('loginMsg').textContent=t;
+ if(!validUser(username)){msg('Username must be 4–20 characters: letters, numbers, dot or underscore.');return}
+ if(password.length<8){msg('Password must be at least 8 characters.');return}
+ try{$('authAction').disabled=true;
+  if(authMode==='signup'){
+   const code=$('signupJoinCode').value.trim();
+   if(password!==$('confirmPassword').value){msg('Passwords do not match.');return}
+   if(!code){msg('Enter the family join code.');return}
+   msg('Creating account…');signupInProgress=true;
+   const cred=await createUserWithEmailAndPassword(auth,toEmail(username),password);let step='join code';
+   try{await setDoc(doc(db,'joinAttempts',cred.user.uid),{code,createdAt:serverTimestamp()});step='profile';
+    var pd={email:toEmail(username),username,displayName:username,phone:'',role:'member',status:'approved',createdAt:serverTimestamp()};
+    await setDoc(doc(db,'members',cred.user.uid),pd)
+   }catch(e){try{await cred.user.delete()}catch(_){await signOut(auth)}msg('Sign up failed at '+step+' ('+(e.code||e.message)+')'+(e.code==='permission-denied'?' — wrong join code.':''));return}
+   user=cred.user;profile={...pd};cacheProfile();show('mainScreen');startApp();
+  }else{msg('Logging in…');await signInWithEmailAndPassword(auth,toEmail(username),password)}
+ }catch(e){const m={'auth/email-already-in-use':'This username is taken. Use Log in.','auth/invalid-credential':'Wrong username or password.','auth/user-not-found':'Username not found.','auth/wrong-password':'Wrong password.','auth/network-request-failed':'Check your internet connection.'};msg(m[e.code]||(e.code||'Error')+': '+e.message)}
+ finally{signupInProgress=false;$('authAction').disabled=false}
+};
+window.logout=async()=>{if(await ask('Log out','Are you sure you want to log out?\nYour chats stay saved on this device.',{ok:'Log out',cancelText:'No',danger:true})){setPresence(false);localStorage.removeItem('awanProfile');await signOut(auth)}};
+function teardown(){started=false;for(const f of [chatStop,memberStop,stStop,ringStop,presStop])if(f)f();chatStop=memberStop=stStop=ringStop=presStop=null;Object.values(watchers).forEach(f=>f());watchers={};myKeys=null}
+onAuthStateChanged(auth,async u=>{
+ if(u&&signupInProgress)return;
+ user=u;teardown();
+ if(!u){profile=null;show('loginScreen');return}
+ let c=null;try{c=JSON.parse(localStorage.getItem('awanProfile')||'null')}catch(_){}
+ if(c&&c.uid===u.uid){profile=c.p;show('mainScreen');startApp()}
+ try{const s=await getDoc(doc(db,'members',u.uid));
+  if(!s.exists()){if(!started)show('joinScreen');return}
+  if(s.data().status!=='approved'){show('blockedScreen');return}
+  profile=s.data();cacheProfile();if(!started){show('mainScreen');startApp()}
+ }catch(e){console.warn('profile check failed',e);if(!started){show('loginScreen');$('loginMsg').textContent='Could not reach the server: '+(e.code||e.message)+'. Check your internet and try again.'}}
+});
+window.completeJoin=async()=>{
+ const displayName=$('joinName').value.trim(),phone=$('joinPhone').value.trim(),code=$('joinCode').value.trim(),m=t=>$('joinMsg').textContent=t;
+ if(!displayName||!/^\+[1-9]\d{7,14}$/.test(phone)||!code){m('Enter your name, a phone number with country code (+92…) and the join code.');return}
+ try{await setDoc(doc(db,'joinAttempts',user.uid),{code,createdAt:serverTimestamp()});const username=(user.email||'').split('@')[0];
+  profile={email:user.email,username,displayName,phone,role:'member',status:'approved'};
+  await setDoc(doc(db,'members',user.uid),{...profile,createdAt:serverTimestamp()});cacheProfile();show('mainScreen');startApp()
+ }catch(e){m('Could not join: '+(e.code||e.message))}
+};
+// ---------- helpers ----------
+const memb=uid=>members.find(x=>x.uid===uid)||(user&&uid===user.uid?profile:null),nameOf=uid=>{const m=memb(uid);return m?(m.displayName||m.username):'Family member'};
+const ini=n=>(n||'F')[0].toUpperCase(),otherOf=id=>id.slice(3).split('_').find(u=>u!==user.uid);
+const hm=t=>new Date(t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),fmt=t=>new Date(t).toDateString()===new Date().toDateString()?hm(t):new Date(t).toLocaleDateString([],{day:'numeric',month:'short'});
+function av(uid,size=48,cls=''){const m=memb(uid),n=m?(m.displayName||m.username):'F',ok=m&&typeof m.photo==='string'&&m.photo.startsWith('data:image/');return `<div class="avatar ${cls}" style="width:${size}px;height:${size}px;font-size:${size*.42}px;${ok?`background-image:url(${m.photo})`:''}">${ok?'':esc(ini(n))}</div>`}
+const isBlocked=uid=>S.blocked.includes(uid);
+// ---------- presence ----------
+function setPresence(online){if(!user)return;setDoc(doc(db,'presence',user.uid),{online,lastSeen:Date.now(),hide:S.lastSeen==='nobody'}).catch(()=>{})}
+document.addEventListener('visibilitychange',()=>{setPresence(!document.hidden);if(!document.hidden&&activeChat)markSeen(activeChat)});
+setInterval(()=>{if(user&&started&&!document.hidden)setPresence(true)},25000);
+function presText(d){if(!d||d.hide||S.lastSeen==='nobody')return '';if(d.online&&Date.now()-d.lastSeen<70000)return 'online';const t=new Date(d.lastSeen);return 'last seen '+(t.toDateString()===new Date().toDateString()?'today at '+hm(d.lastSeen):t.toLocaleDateString([],{day:'numeric',month:'short'})+' at '+hm(d.lastSeen))}
+// ---------- navigation ----------
+const TITLES={chats:'AWAN FAMILY',updates:'Updates',calls:'Calls',contacts:'Contacts',settings:'Settings'};let curTab='chats';
+window.tab=id=>{curTab=id;document.querySelectorAll('#mainScreen main .screen').forEach(x=>x.classList.toggle('active',x.id===id));$('searchWrap').classList.toggle('hidden',id!=='chats');document.querySelectorAll('.bottom button').forEach(b=>b.classList.toggle('active',b.dataset.t===id));$('barTitle').textContent=TITLES[id];$('fab').style.display=(id==='chats'||id==='updates')?'block':'none';$('fab').textContent=id==='updates'?'✏':'✉';if(id==='calls')renderCalls();if(id==='settings')renderSettings();if(id==='updates')renderUpdates()};
+window.fabAct=()=>curTab==='updates'?addStatus():tab('contacts');
+async function startApp(){
+ if(started)return;started=true;tab('chats');setPresence(true);
+ memberStop=onSnapshot(query(collection(db,'members'),where('status','==','approved')),s=>{members=s.docs.map(d=>({uid:d.id,...d.data()}));const me=members.find(m=>m.uid===user.uid);if(me){profile=me;cacheProfile()}renderContacts();renderChats();if(curTab==='updates')renderUpdates();if(curTab==='settings'&&!$('page').classList.contains('show'))renderSettings()});
+ chatStop=onSnapshot(query(collection(db,'chats'),where('memberUids','array-contains',user.uid)),async s=>{chats=s.docs.map(d=>({id:d.id,...d.data()}));for(const c of chats){await localPut('chats',c);watchChat(c.id)}renderChats()});
+ stStop=onSnapshot(query(collection(db,'statuses'),where('exp','>',Date.now())),s=>{statuses=s.docs.map(d=>({id:d.id,...d.data()}));if(curTab==='updates')renderUpdates()},e=>console.warn('status',e.code));
+ await ensureKeys();listenCalls();retryPending();
+ setTimeout(backupReminder,4000);
+}
+// ---------- chat list / contacts ----------
+window.renderChats=()=>{const term=($('chatSearch').value||'').toLowerCase();
+ const arr=chats.filter(c=>!isBlocked(otherOf(c.id))).map(c=>({...c,name:nameOf(otherOf(c.id)),t:lastTxt[c.id+'_t']||(c.updatedAt?c.updatedAt.toMillis():0)})).filter(c=>c.name.toLowerCase().includes(term)).sort((a,b)=>b.t-a.t);
+ $('chatList').innerHTML=arr.map(c=>`<div class="row" data-id="${esc(c.id)}">${av(otherOf(c.id))}<div class="info"><b><span>${esc(c.name)}</span><span class="time" style="${unread[c.id]?'color:var(--g2)':''}">${c.t?fmt(c.t):''}</span></b><small>${unread[c.id]?`<span class="badge" style="float:right">${unread[c.id]}</span>`:''}${esc(lastTxt[c.id]||'Tap to chat')}</small></div></div>`).join('')||'<div class="empty">No chats yet.<br>Tap ✉ to start a conversation.</div>';
+ $('chatList').querySelectorAll('[data-id]').forEach(r=>{r.onclick=()=>openChat(r.dataset.id);hold(r,async()=>{const v=await pick(nameOf(otherOf(r.dataset.id)),[{l:'Delete chat from this device',v:'del',danger:1}]);if(v==='del'&&await ask('Delete chat','Delete all messages in this chat from this device?',{ok:'Delete',danger:1}))await wipeChat(r.dataset.id)})})};
+window.renderContacts=()=>{const term=($('contactSearch').value||'').toLowerCase();
+ $('contactList').innerHTML=members.filter(m=>m.uid!==user.uid&&!isBlocked(m.uid)&&`${m.displayName||''} ${m.username||''} ${m.phone||''}`.toLowerCase().includes(term)).map(m=>`<div class="row" data-uid="${esc(m.uid)}">${av(m.uid)}<div class="info"><b>${esc(m.displayName||m.username)}</b><small>${esc(m.about||m.phone||'@'+m.username)}</small></div></div>`).join('')||'<div class="empty">No contacts found.</div>';
+ $('contactList').querySelectorAll('[data-uid]').forEach(r=>r.onclick=()=>directChat(r.dataset.uid))};
+async function directChat(other){const ids=[user.uid,other].sort(),id='dm_'+ids.join('_');
+ try{const ref=doc(db,'chats',id),s=await getDoc(ref);if(!s.exists())await setDoc(ref,{type:'direct',title:'Direct chat',memberUids:ids,lastMessage:'🔒 Chat started',createdBy:user.uid,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});closePage();openChat(id)}catch(e){toast('Could not open chat: '+(e.code||e.message))}}
+async function wipeChat(id){for(const m of (await localAll('messages')).filter(m=>m.chatId===id))await localDel('messages',m.id);lastTxt[id]='';lastTxt[id+'_t']=0;renderChats();if(activeChat===id)renderMsgs()}
+function hold(el,fn){let t=null;const go=()=>{t=setTimeout(()=>{t=null;fn()},450)},stop=()=>{clearTimeout(t);t=null};el.addEventListener('touchstart',go,{passive:true});['touchend','touchmove','touchcancel'].forEach(e=>el.addEventListener(e,stop,{passive:true}));el.addEventListener('contextmenu',e=>{e.preventDefault();stop();fn()})}
+// ---------- end-to-end encryption ----------
+const b64=b=>btoa(String.fromCharCode(...new Uint8Array(b))),unb64=t=>Uint8Array.from(atob(t),c=>c.charCodeAt(0)),ECDH={name:'ECDH',namedCurve:'P-256'};
+async function ensureKeys(){
+ let k=(await localAll('keys')).find(x=>x.id==='me');
+ if(!k){const kp=await crypto.subtle.generateKey(ECDH,true,['deriveKey']);k={id:'me',priv:await crypto.subtle.exportKey('jwk',kp.privateKey),pub:await crypto.subtle.exportKey('jwk',kp.publicKey)};await localPut('keys',k)}
+ myKeys=k;try{await setDoc(doc(db,'publicKeys',user.uid),{pub:JSON.stringify(k.pub),updatedAt:serverTimestamp()})}catch(e){console.error(e)}
+ for(const m of await localAll('messages'))if(!m.deleted&&(!lastTxt[m.chatId+'_t']||m.ts>lastTxt[m.chatId+'_t'])){lastTxt[m.chatId]=m.text;lastTxt[m.chatId+'_t']=m.ts}
+ renderChats();
+}
+async function aesKey(other){
+ while(!myKeys)await new Promise(r=>setTimeout(r,80));
+ if(keyCache[other])return keyCache[other];
+ const s=await getDoc(doc(db,'publicKeys',other));if(!s.exists())throw Error('This contact has not opened the app yet, so no encryption key exists.');
+ const pub=await crypto.subtle.importKey('jwk',JSON.parse(s.data().pub),ECDH,false,[]),priv=await crypto.subtle.importKey('jwk',myKeys.priv,ECDH,false,['deriveKey']);
+ return keyCache[other]=await crypto.subtle.deriveKey({name:'ECDH',public:pub},priv,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function seal(other,obj){const iv=crypto.getRandomValues(new Uint8Array(12)),ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},await aesKey(other),new TextEncoder().encode(JSON.stringify(obj)));return {ct:b64(ct),iv:b64(iv)}}
+function ping(name,text){if(S.sound)try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=880;g.gain.value=.08;o.start();o.stop(a.currentTime+.12)}catch(e){}if(S.vibrate&&navigator.vibrate)navigator.vibrate(120);if(document.hidden&&window.Notification&&Notification.permission==='granted')try{new Notification(name||'AWAN FAMILY',{body:S.preview?(text||'New message'):'New message'})}catch(e){}}
+function watchChat(id){
+ if(watchers[id])return;const other=otherOf(id),offs=[];
+ offs.push(onSnapshot(doc(db,'publicKeys',other),s=>{delete keyCache[other]},()=>{}));
+ offs.push(onSnapshot(doc(db,'chats',id,'receipts',other),s=>{if(s.exists()){seenAt[id]=s.data().seenAt||0;if(activeChat===id)renderMsgs()}},()=>{}));
+ offs.push(onSnapshot(collection(db,'chats',id,'messages'),async s=>{
+  for(const ch of s.docChanges()){const m=ch.doc.data(),mid=ch.doc.id;
+   if(ch.type==='removed'){if(m.senderUid===user.uid){const r=await localGet('messages',mid);if(r&&!r.delivered){r.delivered=true;await localPut('messages',r);if(activeChat===id)renderMsgs()}}continue}
+   if(m.senderUid===user.uid||m.type!=='e2ee'||!m.ct)continue;
+   try{
+    if(isBlocked(m.senderUid)){deleteDoc(ch.doc.ref).catch(()=>{});continue}
+    if(await localGet('messages',mid)){deleteDoc(ch.doc.ref).catch(()=>{});continue}
+    const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(m.iv)},await aesKey(m.senderUid),unb64(m.ct));let p;try{p=JSON.parse(new TextDecoder().decode(pt))}catch(_){p={t:'txt',text:new TextDecoder().decode(pt)}}
+    const ts=m.createdAt?m.createdAt.toMillis():Date.now();
+    if(p.t==='del'){const r=await localGet('messages',p.id)||{id:p.id,chatId:id,senderUid:m.senderUid,ts};r.text='🚫 This message was deleted';r.deleted=true;await localPut('messages',r)}
+    else{const rec={id:mid,chatId:id,senderUid:m.senderUid,text:p.text,ts};await localPut('messages',rec);lastTxt[id]=rec.text;lastTxt[id+'_t']=ts;
+     if(activeChat===id&&!document.hidden)markSeen(id);else{unread[id]=(unread[id]||0)+1;ping(nameOf(m.senderUid),p.text)}}
+    deleteDoc(ch.doc.ref).catch(()=>{});renderChats();if(activeChat===id)renderMsgs();
+   }catch(e){console.error('decrypt failed',e)}}
+ },e=>console.warn(e.code)));
+ watchers[id]=()=>offs.forEach(f=>f());
+}
+function markSeen(id){unread[id]=0;renderChats();if(S.receipts)setDoc(doc(db,'chats',id,'receipts',user.uid),{seenAt:Date.now()}).catch(()=>{})}
+// ---------- chat screen ----------
+const tickOf=m=>m.status==='failed'?'❗':m.status==='pending'?'🕓':(seenAt[m.chatId]>=m.ts&&m.delivered)||(seenAt[m.chatId]>=m.ts)?'<span class="tick seen">✓✓</span>':m.delivered?'✓✓':'✓';
+async function renderMsgs(){
+ const arr=(await localAll('messages')).filter(m=>m.chatId===activeChat&&m.text).sort((a,b)=>a.ts-b.ts),box=$('chatBody'),near=box.scrollHeight-box.scrollTop-box.clientHeight<120;
+ box.innerHTML='<div class="lock">🔒 Messages are end-to-end encrypted and saved only on this device.</div>'+arr.map(m=>`<div class="bubble ${m.senderUid===user.uid?'mine':''} ${m.deleted?'del':''}" data-id="${esc(m.id)}">${esc(m.text)}<small>${hm(m.ts)}${m.senderUid===user.uid&&!m.deleted?' '+tickOf(m):''}</small></div>`).join('');
+ box.querySelectorAll('[data-id]').forEach(b=>{hold(b,()=>msgMenu(b.dataset.id));b.onclick=async()=>{const r=await localGet('messages',b.dataset.id);if(r&&r.status==='failed'){r.status='pending';await localPut('messages',r);renderMsgs();transmit(r)}}});
+ if(near||!box._init){box.scrollTop=box.scrollHeight;box._init=1}
+}
+async function openChat(id){activeChat=id;const o=otherOf(id);$('chatTitle').textContent=nameOf(o);$('chatAv').innerHTML=av(o,40);$('peerStat').textContent='';$('chatBody')._init=0;$('chatView').classList.add('show');renderMsgs();markSeen(id);
+ if(presStop)presStop();presStop=onSnapshot(doc(db,'presence',o),s=>{peerPres[o]=s.data();if(activeChat===id)$('peerStat').textContent=presText(s.data())},()=>{})}
+window.closeChat=()=>{$('chatView').classList.remove('show');activeChat=null;if(presStop){presStop();presStop=null}};
+async function transmit(rec){
+ try{const other=otherOf(rec.chatId);const body=await seal(other,{t:'txt',text:rec.text});
+  await setDoc(doc(db,'chats',rec.chatId,'messages',rec.id),{...body,senderUid:user.uid,type:'e2ee',createdAt:serverTimestamp()});
+  const cur=await localGet('messages',rec.id);if(cur&&cur.status!=='sent'){cur.status='sent';await localPut('messages',cur)}
+  updateDoc(doc(db,'chats',rec.chatId),{lastMessage:'🔒 Message',updatedAt:serverTimestamp()}).catch(()=>{});
+ }catch(e){const cur=await localGet('messages',rec.id);if(cur){cur.status='failed';await localPut('messages',cur)}toast('Message not sent: '+(e.message||e.code))}
+ if(activeChat===rec.chatId)renderMsgs();
+}
+window.sendMessage=async()=>{
+ const text=$('messageInput').value.trim();if(!text||!activeChat)return;const chatId=activeChat;$('messageInput').value='';
+ const rec={id:doc(collection(db,'chats',chatId,'messages')).id,chatId,senderUid:user.uid,text,ts:Date.now(),status:'pending'};
+ await localPut('messages',rec);lastTxt[chatId]=text;lastTxt[chatId+'_t']=rec.ts;renderMsgs();renderChats();transmit(rec);
+};
+async function retryPending(){for(const m of await localAll('messages'))if(m.senderUid===user.uid&&m.status==='pending'&&Date.now()-m.ts<86400000)transmit(m)}
+async function msgMenu(id){
+ const m=await localGet('messages',id);if(!m)return;const mine=m.senderUid===user.uid;
+ const opts=[{l:'Copy',v:'copy'},{l:'Delete for me',v:'me'}];if(mine&&!m.deleted&&m.status!=='pending')opts.push({l:'Delete for everyone',v:'all',danger:1});
+ const v=await pick('Message',opts);
+ if(v==='copy'){try{await navigator.clipboard.writeText(m.text);toast('Copied')}catch(e){toast('Copy not available')}}
+ else if(v==='me'){await localDel('messages',id);renderMsgs();renderChats()}
+ else if(v==='all'&&await ask('Delete for everyone','This message will be deleted for everyone in this chat.',{ok:'Delete',danger:1})){
+  try{const body=await seal(otherOf(m.chatId),{t:'del',id});await addDoc(collection(db,'chats',m.chatId,'messages'),{...body,senderUid:user.uid,type:'e2ee',createdAt:serverTimestamp()});
+   try{await deleteDoc(doc(db,'chats',m.chatId,'messages',id))}catch(_){}
+   m.text='🚫 You deleted this message';m.deleted=true;await localPut('messages',m);renderMsgs()}catch(e){toast('Could not delete for everyone: '+e.message)}}
+}
+window.chatMenu=async()=>{const o=otherOf(activeChat),b=isBlocked(o);
+ const v=await pick(nameOf(o),[{l:'View contact',v:'view'},{l:'Clear chat',v:'clear'},{l:b?'Unblock':'Block',v:'block',danger:!b}]);
+ if(v==='view'){const m=memb(o)||{};ask(nameOf(o),`About: ${m.about||'Hey there! I am using AWAN FAMILY.'}\nPhone: ${m.phone||'—'}\nUsername: @${m.username||''}`,{cancel:false})}
+ else if(v==='clear'&&await ask('Clear chat','Clear all messages in this chat from this device?',{ok:'Clear',danger:1}))wipeChat(activeChat);
+ else if(v==='block'){if(b)S.blocked=S.blocked.filter(x=>x!==o);else if(await ask('Block '+nameOf(o)+'?','Blocked contacts cannot message or call you.',{ok:'Block',danger:1}))S.blocked.push(o);else return;saveS();if(!b){closeChat();renderChats()}toast(b?'Unblocked':'Blocked')}};
+// ---------- status (updates) ----------
+function pickImage(max,q){return new Promise(res=>{const f=$('imgFile');f.value='';f.onchange=()=>{const file=f.files[0];if(!file)return res(null);const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q))};im.onerror=()=>res(null);im.src=URL.createObjectURL(file)};f.click()})}
+const BGS=['#075e54','#6a1b9a','#c2185b','#1565c0','#e65100','#37474f'];
+async function addStatus(){const v=await pick('New status',[{l:'📝 Text status',v:'t'},{l:'🖼 Photo status',v:'i'}]);if(!v)return;
+ try{let d={uid:user.uid,exp:Date.now()+86400000,createdAt:serverTimestamp()};
+  if(v==='t'){const t=await ask('Text status','',{input:1,ph:'Type a status',ok:'Post'});if(!t||!t.trim())return;d={...d,type:'text',text:t.trim().slice(0,300),bg:BGS[Math.floor(Math.random()*BGS.length)]}}
+  else{const img=await pickImage(720,.6);if(!img)return;const cap=await ask('Photo status','',{input:1,ph:'Add a caption (optional)',ok:'Post'});if(cap===null)return;d={...d,type:'img',img,text:(cap||'').slice(0,200)}}
+  await addDoc(collection(db,'statuses'),d);toast('Status posted')}catch(e){toast('Could not post status: '+(e.code||e.message))}}
+const viewed=()=>JSON.parse(localStorage.getItem('awanViewed')||'[]');
+function renderUpdates(){
+ const live=statuses.filter(s=>s.exp>Date.now()&&!isBlocked(s.uid)).sort((a,b)=>(a.exp||0)-(b.exp||0)),by={};live.forEach(s=>(by[s.uid]=by[s.uid]||[]).push(s));const v=viewed(),mine=by[user.uid]||[];
+ const others=Object.keys(by).filter(u=>u!==user.uid).map(u=>({u,items:by[u],all:by[u].every(s=>v.includes(s.id)),t:by[u][by[u].length-1].exp})).sort((a,b)=>a.all-b.all||b.t-a.t);
+ $('updList').innerHTML=`<div class="row" id="myStat">${av(user.uid,48,mine.length?'ring':'')}<div class="info"><b>My status</b><small>${mine.length?mine.length+' update(s) · tap to view':'Tap ✏ to add a status update'}</small></div></div><h4 style="margin:0;padding:12px 16px 4px;color:var(--muted);font-size:13px">RECENT UPDATES</h4>`+(others.map(o=>`<div class="row" data-u="${esc(o.u)}">${av(o.u,48,o.all?'seen':'ring')}<div class="info"><b>${esc(nameOf(o.u))}</b><small>${o.items.length} update(s) · ${fmt(o.t-86400000)}</small></div></div>`).join('')||'<div class="hint">No recent updates from your family.<br>Statuses disappear after 24 hours.</div>');
+ $('myStat').onclick=()=>mine.length?stOpen(mine):addStatus();$('updList').querySelectorAll('[data-u]').forEach(r=>r.onclick=()=>stOpen(by[r.dataset.u]))}
+let stItems=[],stI=0,stT=null;
+function stOpen(items){stItems=items;stI=0;$('stView').classList.add('show');stShow()}
+function stShow(){clearTimeout(stT);const s=stItems[stI];if(!s)return stClose();const v=viewed();if(!v.includes(s.id)){v.push(s.id);localStorage.setItem('awanViewed',JSON.stringify(v.slice(-300)))}
+ $('stBar').innerHTML=stItems.map((_,i)=>`<i><b style="width:${i<stI?100:0}%;${i===stI?'transition:width 5s linear':''}"></b></i>`).join('');requestAnimationFrame(()=>requestAnimationFrame(()=>{const b=$('stBar').children[stI];if(b)b.firstChild.style.width='100%'}));
+ $('stAv').innerHTML=av(s.uid,38);$('stName').textContent=s.uid===user.uid?'My status':nameOf(s.uid);$('stTime').textContent=s.exp?fmt(s.exp-86400000):'';$('stDel').classList.toggle('hidden',s.uid!==user.uid);
+ $('stView').style.background=s.type==='text'?s.bg:'#000';$('stBody').innerHTML=s.type==='text'?`<div>${esc(s.text)}</div>`:`<img src="${esc(s.img)}" style="max-width:100%;max-height:100%"><div style="position:absolute;bottom:20px;left:0;right:0;font-size:17px;text-shadow:0 1px 3px #000">${esc(s.text||'')}</div>`;stT=setTimeout(()=>{stI++;stShow()},5000)}
+window.stTap=e=>{stI=e.clientX<innerWidth/3?Math.max(0,stI-1):stI+1;stShow()};
+window.stClose=()=>{clearTimeout(stT);$('stView').classList.remove('show');renderUpdates()};
+window.stDelete=async()=>{const s=stItems[stI];clearTimeout(stT);if(await ask('Delete status','Delete this status update?',{ok:'Delete',danger:1})){try{await deleteDoc(doc(db,'statuses',s.id));stItems.splice(stI,1);stShow()}catch(e){toast('Could not delete')}}else stShow()};
+// ---------- calls ----------
+const ICE={iceServers:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']}]};
+let pc=null,callId=null,callDoc=null,pend=[],cUnsubs=[],localStream=null,meta=null;
+async function setupPc(id,type){
+ pend=[];pc=new RTCPeerConnection(ICE);callId=id;$('callView').classList.add('show');
+ localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:type==='video'?(S.lowData?{width:320,height:240,frameRate:15}:true):false});$('localVid').srcObject=localStream;$('localVid').style.display=type==='video'?'block':'none';
+ localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));
+ pc.ontrack=e=>{$('remoteVid').srcObject=e.streams[0]};
+ pc.onicecandidate=e=>{if(e.candidate)addDoc(collection(db,'calls',id,'candidates'),{from:user.uid,c:JSON.stringify(e.candidate)})};
+ pc.onconnectionstatechange=()=>{if(pc&&pc.connectionState==='connected'){meta.at=Date.now();$('callInfo').textContent='🔒 Connected'}};
+ cUnsubs.push(onSnapshot(collection(db,'calls',id,'candidates'),s=>s.docChanges().forEach(ch=>{const d=ch.doc.data();if(ch.type!=='added'||d.from===user.uid)return;const c=JSON.parse(d.c);if(pc&&pc.remoteDescription)pc.addIceCandidate(c).catch(()=>{});else pend.push(c)})));
+ cUnsubs.push(onSnapshot(doc(db,'calls',id),async s=>{const d=s.data();if(!d||!pc)return;callDoc=d;
+  if(d.status==='ended'||d.status==='rejected'){cleanupCall();return}
+  if(d.answer&&d.callerUid===user.uid&&!pc.remoteDescription){await pc.setRemoteDescription(d.answer);pend.forEach(c=>pc.addIceCandidate(c).catch(()=>{}));pend=[]}}));
+}
+window.startCall=async type=>{
+ if(!activeChat||pc)return;const other=otherOf(activeChat);if(isBlocked(other)){toast('Unblock this contact to call');return}
+ try{const id='c_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);meta={peer:other,type,dir:'out',ts:Date.now(),at:0};$('acceptBtn').classList.add('hidden');$('callInfo').textContent='Calling '+nameOf(other)+'…';
+  await setupPc(id,type);const o=await pc.createOffer();await pc.setLocalDescription(o);
+  await setDoc(doc(db,'calls',id),{callerUid:user.uid,calleeUid:other,type,status:'ringing',offer:{type:o.type,sdp:o.sdp},createdAt:serverTimestamp()});
+ }catch(e){toast('Could not start call: '+e.message);cleanupCall()}
+};
+function listenCalls(){
+ ringStop=onSnapshot(query(collection(db,'calls'),where('calleeUid','==',user.uid),where('status','==','ringing')),s=>{
+  s.docChanges().forEach(ch=>{
+   if(ch.type==='removed'){if(!pc&&callId===ch.doc.id){logCall('missed');callId=null;$('callView').classList.remove('show')}return}
+   if(pc)return;const d=ch.doc.data();if(Date.now()-(d.createdAt?d.createdAt.toMillis():Date.now())>60000)return;
+   if(isBlocked(d.callerUid)){updateDoc(ch.doc.ref,{status:'rejected'}).catch(()=>{});return}
+   callId=ch.doc.id;callDoc=d;meta={peer:d.callerUid,type:d.type,dir:'in',ts:Date.now(),at:0};ping(nameOf(d.callerUid),'Incoming call');
+   $('callInfo').textContent=(d.type==='video'?'Video':'Voice')+' call from '+nameOf(d.callerUid);$('acceptBtn').classList.remove('hidden');$('callView').classList.add('show')})
+ },e=>console.warn(e.code));
+}
+window.answerCall=async()=>{try{$('acceptBtn').classList.add('hidden');const id=callId,d=callDoc;await setupPc(id,d.type);
+ await pc.setRemoteDescription(d.offer);pend.forEach(c=>pc.addIceCandidate(c).catch(()=>{}));pend=[];
+ const a=await pc.createAnswer();await pc.setLocalDescription(a);await updateDoc(doc(db,'calls',id),{answer:{type:a.type,sdp:a.sdp},status:'accepted'});$('callInfo').textContent='Connecting…'
+}catch(e){toast('Could not answer: '+e.message);endCall()}};
+window.endCall=async()=>{const id=callId;try{if(id)await updateDoc(doc(db,'calls',id),{status:(callDoc&&callDoc.status==='ringing'&&callDoc.calleeUid===user.uid)?'rejected':'ended'})}catch(e){}cleanupCall()};
+function logCall(status){if(!meta)return;const m=meta;meta=null;localPut('calls',{id:'l_'+m.ts,peer:m.peer,type:m.type,dir:m.dir,ts:m.ts,dur:m.at?Math.round((Date.now()-m.at)/1000):0,status})}
+function cleanupCall(){logCall(meta&&meta.at?'done':(meta&&meta.dir==='in'?'declined':'no answer'));cUnsubs.forEach(f=>f());cUnsubs=[];if(localStream)localStream.getTracks().forEach(t=>t.stop());localStream=null;if(pc){pc.close();pc=null}callId=null;callDoc=null;pend=[];$('remoteVid').srcObject=null;$('callView').classList.remove('show');$('acceptBtn').classList.add('hidden')}
+async function renderCalls(){
+ const arr=(await localAll('calls')).sort((a,b)=>b.ts-a.ts);
+ $('callList').innerHTML=arr.map(c=>`<div class="row" data-p="${esc(c.peer)}">${av(c.peer)}<div class="info"><b><span style="${c.status==='missed'?'color:#e53935':''}">${esc(nameOf(c.peer))}</span><span class="time">${c.type==='video'?'🎥':'📞'}</span></b><small>${c.dir==='in'?'↙ Incoming':'↗ Outgoing'} · ${fmt(c.ts)}${c.dur?' · '+Math.floor(c.dur/60)+'m '+c.dur%60+'s':''}${c.status==='missed'?' · Missed':''}</small></div></div>`).join('')||'<div class="empty">No calls yet.<br>Open a chat and tap 📞 or 🎥.</div>';
+ $('callList').querySelectorAll('[data-p]').forEach(r=>r.onclick=()=>directChat(r.dataset.p))
+}
+// ---------- backup / restore ----------
+async function pwKey(pw,salt){const b=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},b,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function doBackup(){try{
+ const pw=await ask('Back up chats','Choose a password (at least 6 characters). Without it the backup cannot be opened.',{input:1,type:'password',ph:'Backup password',ok:'Back up'});if(pw===null)return;if(pw.length<6){toast('Password must be at least 6 characters');return}
+ const data=JSON.stringify({app:'AWAN FAMILY',v:3,chats:await localAll('chats'),messages:await localAll('messages'),keys:await localAll('keys'),calls:await localAll('calls')});
+ const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),enc=await crypto.subtle.encrypt({name:'AES-GCM',iv},await pwKey(pw,salt),new TextEncoder().encode(data));
+ const out=JSON.stringify({app:'AWAN FAMILY',salt:b64(salt),iv:b64(iv),data:b64(enc)}),fname='AWAN-FAMILY-'+new Date().toISOString().slice(0,10)+'.awanbackup',P=window.Capacitor&&Capacitor.Plugins;
+ if(P&&P.Filesystem&&P.Share){const r=await P.Filesystem.writeFile({path:fname,data:out,directory:'CACHE',encoding:'utf8'});await P.Share.share({title:'AWAN FAMILY backup',url:r.uri,dialogTitle:'Save backup (Drive / Files)'})}
+ else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out]));a.download=fname;a.click()}
+ S.lastBackup=Date.now();saveS();toast('Backup created');if($('page').classList.contains('show'))renderPage()
+}catch(e){toast('Backup failed: '+e.message)}}
+window.restoreBackup=async ev=>{const f=ev.target.files[0];if(!f)return;try{
+ const w=JSON.parse(await f.text()),pw=await ask('Restore chats','Enter the backup password.',{input:1,type:'password',ok:'Restore'});if(!pw)return;
+ const d=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(w.iv)},await pwKey(pw,unb64(w.salt)),unb64(w.data))));
+ for(const k of['chats','messages','keys','calls'])for(const x of d[k]||[])await localPut(k,x);
+ await ensureKeys();toast('Backup restored');if(activeChat)renderMsgs()
+}catch(e){toast('Restore failed: wrong password or damaged file')}ev.target.value=''};
+async function backupReminder(){const gap={daily:864e5,weekly:6048e5,monthly:2592e6}[S.freq];if(!gap||Date.now()-S.lastBackup<gap)return;if((await localAll('messages')).length&&await ask('Back up your chats','Your chats are stored only on this phone. Back them up now so you never lose them.',{ok:'Back up',cancelText:'Later'}))doBackup()}
+// ---------- settings pages ----------
+let curPage=null;
+const swc=on=>`<div class="sw ${on?'on':''}"></div>`;
+const MB=async()=>{try{const e=await navigator.storage.estimate();return (e.usage/1048576).toFixed(1)+' MB'}catch(_){return '—'}};
+async function pageItems(p){
+ const T=(k,t,sub,ic)=>({t,sub,on:S[k],ic,act:()=>{S[k]=!S[k];saveS()}});
+ if(p==='profile')return [{t:'Name',sub:profile.displayName,ic:'👤',act:async()=>{const v=await ask('Your name','',{input:1,value:profile.displayName,ok:'Save'});if(v&&v.trim())upd({displayName:v.trim().slice(0,40)})}},{t:'About',sub:profile.about||'Hey there! I am using AWAN FAMILY.',ic:'ℹ️',act:async()=>{const v=await ask('About','',{input:1,value:profile.about||'',ok:'Save'});if(v!==null)upd({about:v.trim().slice(0,100)})}},{t:'Profile photo',sub:'Tap to change',ic:'🖼',act:async()=>{const img=await pickImage(160,.7);if(img)upd({photo:img})}},{t:'Phone',sub:profile.phone||'—',ic:'📞'},{t:'Username',sub:'@'+profile.username,ic:'🔑'}];
+ if(p==='account'){const fp=myKeys?[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(myKeys.pub.x+myKeys.pub.y)))].slice(0,12).map(b=>String(b).padStart(3,'0')).join(' '):'—';
+  return [{t:'Security code',sub:fp,ic:'🔐',act:()=>ask('Security code','This code identifies your encryption key. It changes only if you log in on a new device or reinstall without restoring a backup.',{cancel:false})},{t:'End-to-end encryption',sub:'Messages and calls are secured',ic:'🔒',act:()=>ask('End-to-end encryption','Messages are encrypted on your phone with keys that never leave it. The server only relays unreadable data and removes it after delivery. Calls use encrypted WebRTC.',{cancel:false})},{t:'Change number',sub:'Contact the family admin',ic:'📱',act:()=>ask('Change number','Ask the family admin to update your phone number.',{cancel:false})},{t:'Delete my account',sub:'Contact the family admin',ic:'🗑',act:()=>ask('Delete account','For safety, accounts are removed by the family admin. Your chats on this phone can be erased from Settings › Chats.',{cancel:false})}]}
+ if(p==='privacy')return [{t:'Last seen and online',sub:S.lastSeen==='everyone'?'Everyone':'Nobody',ic:'👁',act:async()=>{const v=await pick('Who can see my last seen & online',[{l:'Everyone',v:'everyone'},{l:'Nobody',v:'nobody'}]);if(v){S.lastSeen=v;saveS();setPresence(true)}}},{...T('receipts','Read receipts','If turned off, you won\'t send or get blue ticks',' ✓'),ic:'✓✓'},{t:'Blocked contacts',sub:S.blocked.length?S.blocked.length+' blocked':'None',ic:'🚫',act:()=>openPage('blocked')}];
+ if(p==='blocked')return S.blocked.length?S.blocked.map(u=>({t:nameOf(u),sub:'Tap to unblock',ic:'🚫',act:async()=>{if(await ask('Unblock','Unblock '+nameOf(u)+'?',{ok:'Unblock'})){S.blocked=S.blocked.filter(x=>x!==u);saveS();renderChats()}}})):[{t:'No blocked contacts',sub:'Block someone from the ⋮ menu inside a chat',ic:'✅'}];
+ if(p==='chats')return [{t:'Theme',sub:{system:'System default',light:'Light',dark:'Dark'}[S.theme],ic:'🌓',act:async()=>{const v=await pick('Theme',[{l:'System default',v:'system'},{l:'Light',v:'light'},{l:'Dark',v:'dark'}]);if(v){S.theme=v;saveS()}}},{t:'Wallpaper',sub:WALLS[S.wall][0],ic:'🎨',act:async()=>{const v=await pick('Chat wallpaper',WALLS.map((w,i)=>({l:w[0],v:i+1})));if(v){S.wall=v-1;saveS()}}},{t:'Font size',sub:S.font<15?'Small':S.font>15?'Large':'Medium',ic:'🔠',act:async()=>{const v=await pick('Font size',[{l:'Small',v:13},{l:'Medium',v:15},{l:'Large',v:18}]);if(v){S.font=v;saveS()}}},{...T('enter','Enter is send','Enter key sends your message'),ic:'↵'},{t:'Chat backup',sub:'Back up or restore chats',ic:'☁️',act:()=>openPage('backup')},{t:'Clear all chats',sub:'Deletes messages on this device',ic:'🧹',act:async()=>{if(await ask('Clear all chats','Delete all messages from this device? This cannot be undone without a backup.',{ok:'Clear',danger:1})){await localClear('messages');for(const c of chats){lastTxt[c.id]='';lastTxt[c.id+'_t']=0}renderChats();toast('All chats cleared')}}}];
+ if(p==='notifications')return [{...T('sound','Message tone','Play a tone for new messages and calls'),ic:'🔔'},{...T('vibrate','Vibrate','Vibrate for new messages and calls'),ic:'📳'},{...T('preview','Show preview','Show message text in notifications'),ic:'👀'},{t:'Allow notifications',sub:window.Notification?Notification.permission:'Not supported',ic:'🔕',act:async()=>{if(window.Notification){await Notification.requestPermission()}}}];
+ if(p==='storage'){const ms=await localAll('messages'),cs=await localAll('calls');return [{t:'Storage used',sub:await MB(),ic:'💾'},{t:'Messages',sub:ms.length+' on this device · '+cs.length+' call(s)',ic:'💬'},{...T('lowData','Use less data for calls','Lower video quality to save data'),ic:'📶'}]}
+ if(p==='backup'){const sz=await MB();return [{t:'Last backup',sub:S.lastBackup?new Date(S.lastBackup).toLocaleString():'Never',ic:'🕘'},{t:'Back up now',sub:'Password-protected file · save to Drive or Files',ic:'⬆️',act:doBackup},{t:'Auto-backup reminder',sub:{never:'Never',daily:'Daily',weekly:'Weekly',monthly:'Monthly'}[S.freq],ic:'⏰',act:async()=>{const v=await pick('Remind me to back up',[{l:'Never',v:'never'},{l:'Daily',v:'daily'},{l:'Weekly',v:'weekly'},{l:'Monthly',v:'monthly'}]);if(v){S.freq=v;saveS()}}},{t:'Restore from backup',sub:'Choose a .awanbackup file',ic:'⬇️',act:()=>$('restoreFile').click()},{t:'Local data size',sub:sz,ic:'💾'}]}
+ if(p==='help')return [{t:'Help center',sub:'How AWAN FAMILY works',ic:'❓',act:()=>ask('Help center','• Tap ✉ to start a chat.\n• Hold a message to delete or copy it.\n• Chats live only on this phone, so back them up in Settings › Chats › Chat backup.\n• Statuses disappear after 24 hours.',{cancel:false})},{t:'Contact us',sub:'Ask your family admin',ic:'✉️',act:()=>ask('Contact us','For help or approvals, contact the family admin.',{cancel:false})},{t:'App info',sub:'AWAN FAMILY 1.1',ic:'ℹ️'}];
+ return [];
+}
+async function upd(f){try{await updateDoc(doc(db,'members',user.uid),f);profile={...profile,...f};cacheProfile();renderPage();toast('Saved')}catch(e){toast('Could not save: '+(e.code||e.message))}}
+const PT={profile:'Profile',account:'Account',privacy:'Privacy',blocked:'Blocked contacts',chats:'Chats',notifications:'Notifications',storage:'Storage and data',backup:'Chat backup',help:'Help'};
+window.openPage=p=>{curPage=p;$('pageTitle').textContent=PT[p];$('page').classList.add('show');renderPage()};
+window.closePage=()=>{$('page').classList.remove('show');curPage=null;if(curTab==='settings')renderSettings()};
+async function renderPage(){if(!curPage)return;const p=curPage,items=await pageItems(p);if(p!==curPage)return;
+ $('pageBody').innerHTML=(p==='profile'?`<div style="text-align:center;padding:20px" id="pfAv">${av(user.uid,110)}</div>`:'')+items.map((i,n)=>`<div class="item" data-n="${n}"><span class="ic">${i.ic||''}</span><div style="flex:1"><div>${esc(i.t)}</div>${i.sub?`<small>${esc(i.sub)}</small>`:''}</div>${i.on!==undefined?swc(i.on):''}</div>`).join('');
+ $('pageBody').querySelectorAll('[data-n]').forEach(e=>e.onclick=async()=>{const i=items[e.dataset.n];if(i.act){await i.act();if(curPage===p)renderPage()}});
+ const a=$('pfAv');if(a)a.onclick=async()=>{const img=await pickImage(160,.7);if(img)upd({photo:img})}}
+async function renderSettings(){
+ const row=(k,ic,t,sub)=>`<div class="item" data-s="${k}"><span class="ic">${ic}</span><div style="flex:1"><div>${t}</div><small>${sub}</small></div></div>`;
+ $('settingsBox').innerHTML=`<div class="profile" data-s="profile">${av(user.uid,64)}<div><b style="font-size:18px">${esc(profile.displayName)}</b><small style="display:block;color:var(--muted)">${esc(profile.about||'Hey there! I am using AWAN FAMILY.')}</small></div></div>`+
+ row('account','🔑','Account','Security code, encryption')+row('privacy','🔒','Privacy','Last seen, read receipts, blocked')+row('chats','💬','Chats','Theme, wallpaper, font size')+row('notifications','🔔','Notifications','Tones, vibrate, preview')+row('storage','💾','Storage and data','Usage, call data')+row('backup','☁️','Chat backup','Back up and restore')+row('help','❓','Help','Help center, contact, app info')+row('invite','👥','Invite a friend','Share the app link')+row('logout','⎋','Log out','');
+ $('settingsBox').querySelectorAll('[data-s]').forEach(e=>e.onclick=async()=>{const k=e.dataset.s;if(k==='logout')return logout();if(k==='invite'){const text='Join me on AWAN FAMILY, our private family messenger: '+location.href,P=window.Capacitor&&Capacitor.Plugins;try{if(P&&P.Share)await P.Share.share({text});else if(navigator.share)await navigator.share({text});else{await navigator.clipboard.writeText(text);toast('Link copied')}}catch(_){}return}openPage(k)})
+}
+</script>
+</body></html>
