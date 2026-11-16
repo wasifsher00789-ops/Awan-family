@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#075e54"><title>AWAN FAMILY</title>
+<style>
+:root{--g:#075e54;--g2:#00a884;--bg:#fff;--fg:#111b21;--card:#f0f2f5;--line:#e9edef;--muted:#667781;--bub:#fff;--mine:#d9fdd3;--chatbg:#efeae2;--fs:15px}
+body.dark{--bg:#111b21;--fg:#e9edef;--card:#202c33;--line:#222d34;--muted:#8696a0;--bub:#202c33;--mine:#005c4b;--chatbg:#0b141a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:#cfd8d4;color:var(--fg);font-family:system-ui,Arial,sans-serif}
+.app{max-width:560px;height:100dvh;margin:auto;background:var(--bg);display:flex;flex-direction:column;position:relative;overflow:hidden}
+button{font:inherit;cursor:pointer}input{font:inherit;color:var(--fg)}.hidden{display:none!important}
+header{background:var(--g);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;padding-top:calc(12px + env(safe-area-inset-top))}
+body.dark header{background:#202c33}.brand{font-size:21px;font-weight:700}
+main{flex:1;overflow:auto}.screen{display:none}.screen.active{display:block}
+.search{padding:8px 12px}.search input,.field{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);outline:none;font-size:15px}.search input{border:0;border-radius:22px}
+.row{display:flex;align-items:center;gap:13px;padding:11px 16px;cursor:pointer}.row:active{background:var(--card)}
+.avatar{width:48px;height:48px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;background:#6a7175;color:#fff;font-weight:600;font-size:20px}
+.info{flex:1;min-width:0;border-bottom:1px solid var(--line);padding-bottom:10px}.info b{display:flex;justify-content:space-between;font-weight:500;font-size:16px}.info small{display:block;color:var(--muted);font-size:13.5px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.time{font-size:12px;color:var(--muted);font-weight:400}.badge{background:var(--g2);color:#fff;border-radius:11px;min-width:21px;padding:2px 6px;font-size:12px;text-align:center}
+.bottom{display:flex;border-top:1px solid var(--line);background:var(--bg);padding-bottom:env(safe-area-inset-bottom)}.bottom button{flex:1;border:0;background:none;color:var(--muted);padding:9px 0 7px;font-size:12px}.bottom button span{display:block;font-size:21px}.bottom button.active{color:var(--g2);font-weight:700}
+.fab{position:absolute;right:18px;bottom:calc(76px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:16px;border:0;background:var(--g2);color:#fff;font-size:24px;box-shadow:0 3px 8px #0004}
+.primary,.secondary{width:100%;padding:13px;border:0;border-radius:24px;font-weight:600;margin-top:10px}.primary{background:var(--g2);color:#fff}.secondary{background:var(--card);color:var(--fg)}
+.hint{font-size:13px;color:var(--muted);line-height:1.6;text-align:center;padding:12px}.empty{text-align:center;color:var(--muted);padding:40px 24px;line-height:1.7}
+.auth{padding:28px 22px;overflow:auto;text-align:center}.auth h2{color:var(--g2)}
+.tabs2{display:flex;border-radius:24px;overflow:hidden;background:var(--card);margin:14px 0}.tabs2 button{flex:1;padding:11px;border:0;background:none;color:var(--muted)}.tabs2 button.active{background:var(--g2);color:#fff}
+.chat{display:none;position:absolute;inset:0;z-index:5;background:var(--chatbg);flex-direction:column}.chat.show{display:flex}
+.chathead{display:flex;align-items:center;gap:10px;padding:9px 10px;padding-top:calc(9px + env(safe-area-inset-top));background:var(--g);color:#fff}body.dark .chathead{background:#202c33}.chathead button{border:0;background:none;color:#fff;font-size:22px;padding:4px 8px}.chathead .avatar{width:40px;height:40px;font-size:17px}
+.chatbody{flex:1;overflow:auto;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.bubble{max-width:80%;padding:7px 10px 5px;border-radius:9px;background:var(--bub);align-self:flex-start;line-height:1.45;word-break:break-word;font-size:var(--fs);white-space:pre-wrap;box-shadow:0 1px 1px #0002}.bubble.mine{background:var(--mine);align-self:flex-end}
+.bubble small{display:block;text-align:right;font-size:11px;color:var(--muted);margin-top:2px;white-space:normal}.lock{align-self:center;background:#fff3c4;color:#54442b;font-size:12px;padding:6px 12px;border-radius:8px;margin:6px 0;text-align:center;max-width:90%}body.dark .lock{background:#182229;color:#ffd279}
+.composer{display:flex;gap:8px;padding:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}.composer input{flex:1;border:0;border-radius:24px;padding:12px 16px;background:var(--bg);outline:none}.composer button{width:46px;height:46px;border-radius:50%;border:0;background:var(--g2);color:#fff;font-size:18px}
+.set h4{margin:0;padding:16px 16px 6px;color:var(--g2);font-size:13px;text-transform:uppercase;letter-spacing:.5px}.set .item{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;gap:10px;cursor:pointer}.set .item:active{background:var(--card)}.set .item small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.sw{width:40px;height:22px;border-radius:11px;background:#8696a0;position:relative;flex-shrink:0}.sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.15s}.sw.on{background:var(--g2)}.sw.on::after{left:20px}
+.profile{display:flex;gap:14px;align-items:center;padding:18px 16px;border-bottom:1px solid var(--line)}.profile .avatar{width:64px;height:64px;font-size:28px}
+.overlay{display:none;position:absolute;inset:0;z-index:20;background:#111;color:#fff;align-items:center;justify-content:center;flex-direction:column}.overlay.show{display:flex}
+</style>
+</head>
+<body><div class="app">
+<header><div class="brand" id="barTitle">AWAN FAMILY</div><span style="font-size:13px;opacity:.85">🔒</span></header>
+
+<section id="loginScreen" class="screen active auth">
+ <div style="font-size:56px">💬</div><h2>AWAN FAMILY</h2>
+ <div class="tabs2"><button id="loginMode" class="active" onclick="setAuthMode('login')">Log in</button><button id="signupMode" onclick="setAuthMode('signup')">Sign up</button></div>
+ <input id="username" class="field" placeholder="Username (e.g. wasif786)" autocomplete="username" autocapitalize="none">
+ <input id="password" class="field" type="password" placeholder="Password (min 8 characters)" autocomplete="current-password" style="margin-top:9px">
+ <input id="confirmPassword" class="field signup-only hidden" type="password" placeholder="Confirm password" style="margin-top:9px">
+ <input id="signupJoinCode" class="field signup-only hidden" placeholder="Family join code" style="margin-top:9px">
+ <button class="primary" id="authAction" onclick="submitAuth()">Log in</button>
+ <div id="loginMsg" class="hint">Private family messenger. Signing up needs the family join code.</div>
+</section>
+<section id="joinScreen" class="screen auth">
+ <h2>Complete your profile</h2><p class="hint">Enter your name, phone number and the family join code.</p>
+ <input id="joinName" class="field" placeholder="Your full name">
+ <input id="joinPhone" class="field" placeholder="+92… phone number" style="margin-top:9px">
+ <input id="joinCode" class="field" placeholder="Family join code" style="margin-top:9px">
+ <button class="primary" onclick="completeJoin()">Join family</button><div id="joinMsg" class="hint"></div><button class="secondary" onclick="logout()">Log out</button>
+</section>
+<section id="blockedScreen" class="screen"><div class="empty"><div style="font-size:48px">🔒</div><b>Your account is not approved.</b><br>Contact the admin.<button class="secondary" onclick="logout()">Log out</button></div></section>
+
+<div id="mainScreen" style="display:none;flex:1;min-height:0;flex-direction:column">
+ <div id="searchWrap" class="search"><input id="chatSearch" placeholder="Search chats" oninput="renderChats()"></div>
+ <main>
+  <section id="chats" class="screen active"><div id="chatList"></div></section>
+  <section id="calls" class="screen"><div id="callList"></div></section>
+  <section id="contacts" class="screen"><div class="search"><input id="contactSearch" placeholder="Search name or number" oninput="renderContacts()"></div><div id="contactList"></div></section>
+  <section id="settings" class="screen set"><div id="settingsBox"></div></section>
+ </main>
+ <button class="fab" onclick="tab('contacts')">✉</button>
+ <div class="bottom"><button data-t="chats" class="active" onclick="tab('chats')"><span>💬</span>Chats</button><button data-t="calls" onclick="tab('calls')"><span>📞</span>Calls</button><button data-t="contacts" onclick="tab('contacts')"><span>👥</span>Contacts</button><button data-t="settings" onclick="tab('settings')"><span>⚙️</span>Settings</button></div>
+ <input id="restoreFile" type="file" accept=".awanbackup" class="hidden" onchange="restoreBackup(event)">
+</div>
+
+<div id="chatView" class="chat"><div class="chathead"><button onclick="closeChat()">‹</button><div class="avatar" id="chatAvatar">F</div><div style="flex:1"><b id="chatTitle"></b><div style="font-size:12px;opacity:.8">🔒 End-to-end encrypted</div></div><button onclick="startCall('video')">🎥</button><button onclick="startCall('audio')">📞</button></div><div id="chatBody" class="chatbody"></div><div class="composer"><input id="messageInput" placeholder="Message" autocomplete="off" onkeydown="if(event.key==='Enter'&&S.enter)sendMessage()"><button onclick="sendMessage()">➤</button></div></div>
+
+<div id="callView" class="overlay"><div id="callInfo" style="margin:10px;font-size:18px"></div><video id="remoteVid" autoplay playsinline style="width:100%;max-height:60%;background:#000"></video><video id="localVid" autoplay playsinline muted style="width:110px;position:absolute;top:10px;right:10px;border-radius:8px"></video><div style="display:flex;gap:14px;margin:18px"><button id="acceptBtn" class="primary hidden" style="width:auto;padding:13px 24px" onclick="answerCall()">Accept</button><button class="primary" style="width:auto;padding:13px 24px;background:#e53935" onclick="endCall()">End</button></div></div>
+</div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc,collection,query,where,onSnapshot,addDoc,updateDoc,deleteDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyDLEn8d5xqfEKKpbubH0k5KsCf7Nb_OgIM",authDomain:"awan-family-ec23b.firebaseapp.com",projectId:"awan-family-ec23b",storageBucket:"awan-family-ec23b.firebasestorage.app",messagingSenderId:"446268995535",appId:"1:446268995535:web:11b19c4c533dcf82b804ba"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let user=null,profile=null,members=[],chats=[],activeChat=null,chatStop=null,memberStop=null,signupInProgress=false,myKeys=null,watchers={},ringStop=null;
+const lastTxt={},unread={};
+// ---------- settings (stored on this device) ----------
+const S=Object.assign({theme:'system',font:15,enter:false,sound:true,vibrate:true},JSON.parse(localStorage.getItem('awanSettings')||'{}'));
+function saveS(){localStorage.setItem('awanSettings',JSON.stringify(S));applyS()}
+function applyS(){const dark=S.theme==='dark'||(S.theme==='system'&&matchMedia('(prefers-color-scheme:dark)').matches);document.body.classList.toggle('dark',dark);document.documentElement.style.setProperty('--fs',S.font+'px')}
+applyS();
+// ---------- local database (all chats live here) ----------
+function openLocal(){return new Promise((res,rej)=>{const r=indexedDB.open('awan-family-local-v1',3);r.onupgradeneeded=()=>{const d=r.result;for(const n of ['messages','chats','keys','calls'])if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:'id'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function localOp(store,mode,fn){const d=await openLocal();return new Promise((res,rej)=>{const t=d.transaction(store,mode),o=t.objectStore(store),r=fn(o);t.oncomplete=()=>{d.close();res(r&&r.result)};t.onerror=()=>rej(t.error)})}
+const localPut=(s,v)=>localOp(s,'readwrite',o=>o.put(v)),localAll=s=>localOp(s,'readonly',o=>o.getAll()),localDel=(s,k)=>localOp(s,'readwrite',o=>o.delete(k)),localClear=s=>localOp(s,'readwrite',o=>o.clear());
+function show(id){['loginScreen','joinScreen','blockedScreen','mainScreen'].forEach(k=>$(k).style.display=k===id?(k==='mainScreen'?'flex':'block'):'none')}
+// ---------- auth ----------
+let authMode='login';
+const toEmail=n=>n.toLowerCase()+'@awan-family.app',validUser=n=>/^[a-z0-9][a-z0-9._]{3,19}$/.test(n);
+window.setAuthMode=m=>{authMode=m;$('loginMode').classList.toggle('active',m==='login');$('signupMode').classList.toggle('active',m==='signup');$('authAction').textContent=m==='login'?'Log in':'Create account';document.querySelectorAll('.signup-only').forEach(e=>e.classList.toggle('hidden',m!=='signup'));$('loginMsg').textContent=m==='login'?'Log in with your username and password.':'Choose a username and password, then enter the family join code.'};
+window.submitAuth=async()=>{
+ const username=$('username').value.trim().toLowerCase(),password=$('password').value,msg=t=>$('loginMsg').textContent=t;
+ if(!validUser(username)){msg('Username must be 4–20 characters: letters, numbers, dot or underscore.');return}
+ if(password.length<8){msg('Password must be at least 8 characters.');return}
+ try{$('authAction').disabled=true;
+  if(authMode==='signup'){
+   const code=$('signupJoinCode').value.trim();
+   if(password!==$('confirmPassword').value){msg('Passwords do not match.');return}
+   if(!code){msg('Enter the family join code.');return}
+   msg('Creating account…');signupInProgress=true;
+   const cred=await createUserWithEmailAndPassword(auth,toEmail(username),password);let step='join code';
+   try{await setDoc(doc(db,'joinAttempts',cred.user.uid),{code,createdAt:serverTimestamp()});step='profile';
+    var pd={email:toEmail(username),username,displayName:username,phone:'',role:'member',status:'approved',createdAt:serverTimestamp()};
+    await setDoc(doc(db,'members',cred.user.uid),pd)
+   }catch(e){try{await cred.user.delete()}catch(_){await signOut(auth)}msg('Sign up failed at '+step+' ('+(e.code||e.message)+')'+(e.code==='permission-denied'?' — wrong join code.':''));return}
+   profile={...pd};show('mainScreen');startApp();
+  }else{msg('Logging in…');await signInWithEmailAndPassword(auth,toEmail(username),password)}
+ }catch(e){const m={'auth/email-already-in-use':'This username is taken. Use Log in.','auth/invalid-credential':'Wrong username or password.','auth/user-not-found':'Username not found.','auth/wrong-password':'Wrong password.','auth/network-request-failed':'Check your internet connection.'};msg(m[e.code]||(e.code||'Error')+': '+e.message)}
+ finally{signupInProgress=false;$('authAction').disabled=false}
+};
+window.logout=async()=>{await signOut(auth)};
+onAuthStateChanged(auth,async u=>{
+ user=u;if(u&&signupInProgress)return;
+ if(chatStop){chatStop();chatStop=null}if(memberStop){memberStop();memberStop=null}if(ringStop){ringStop();ringStop=null}Object.values(watchers).forEach(f=>f());watchers={};myKeys=null;
+ if(!u){profile=null;show('loginScreen');$('loginMsg').textContent='Log in with your username and password.';return}
+ try{const s=await getDoc(doc(db,'members',u.uid));
+  if(!s.exists()){show('joinScreen');return}
+  if(s.data().status!=='approved'){show('blockedScreen');return}
+  profile=s.data();show('mainScreen');startApp();
+ }catch(e){show('loginScreen');$('loginMsg').textContent='Logged in but cannot reach database: '+(e.code||e.message);signOut(auth)}
+});
+window.completeJoin=async()=>{
+ const displayName=$('joinName').value.trim(),phone=$('joinPhone').value.trim(),code=$('joinCode').value.trim(),m=t=>$('joinMsg').textContent=t;
+ if(!displayName||!/^\+[1-9]\d{7,14}$/.test(phone)||!code){m('Enter your name, a phone number with country code (+92…) and the join code.');return}
+ try{await setDoc(doc(db,'joinAttempts',user.uid),{code,createdAt:serverTimestamp()});const username=(user.email||'').split('@')[0];
+  profile={email:user.email,username,displayName,phone,role:'member',status:'approved'};
+  await setDoc(doc(db,'members',user.uid),{...profile,createdAt:serverTimestamp()});show('mainScreen');startApp()
+ }catch(e){m('Could not join: '+(e.code||e.message))}
+};
+// ---------- navigation ----------
+const TITLES={chats:'AWAN FAMILY',calls:'Calls',contacts:'Contacts',settings:'Settings'};
+window.tab=id=>{document.querySelectorAll('#mainScreen main .screen').forEach(x=>x.classList.toggle('active',x.id===id));$('searchWrap').classList.toggle('hidden',id!=='chats');document.querySelectorAll('.bottom button').forEach(b=>b.classList.toggle('active',b.dataset.t===id));$('barTitle').textContent=TITLES[id];if(id==='calls')renderCalls();if(id==='settings')renderSettings()};
+async function startApp(){
+ tab('chats');
+ memberStop=onSnapshot(query(collection(db,'members'),where('status','==','approved')),s=>{members=s.docs.map(d=>({uid:d.id,...d.data()}));renderContacts();renderChats()});
+ chatStop=onSnapshot(query(collection(db,'chats'),where('memberUids','array-contains',user.uid)),async s=>{chats=s.docs.map(d=>({id:d.id,...d.data()}));for(const c of chats){await localPut('chats',c);watchChat(c.id)}renderChats()});
+ await ensureKeys();listenCalls();
+}
+// ---------- people / chat list ----------
+const otherOf=id=>id.slice(3).split('_').find(u=>u!==user.uid),nameOf=uid=>{const m=members.find(x=>x.uid===uid);return m?(m.displayName||m.username):'Family member'};
+const ini=n=>(n||'F')[0].toUpperCase(),fmt=t=>{const d=new Date(t),n=new Date();return d.toDateString()===n.toDateString()?d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString([],{day:'numeric',month:'short'})};
+window.renderChats=()=>{const term=($('chatSearch').value||'').toLowerCase();
+ const arr=chats.map(c=>({...c,name:nameOf(otherOf(c.id)),t:lastTxt[c.id+'_t']||(c.updatedAt?c.updatedAt.toMillis():0)})).filter(c=>c.name.toLowerCase().includes(term)).sort((a,b)=>b.t-a.t);
+ $('chatList').innerHTML=arr.map(c=>`<div class="row" data-id="${esc(c.id)}"><div class="avatar">${esc(ini(c.name))}</div><div class="info"><b><span>${esc(c.name)}</span><span class="time">${c.t?fmt(c.t):''}</span></b><small>${unread[c.id]?`<span class="badge" style="float:right">${unread[c.id]}</span>`:''}${esc(lastTxt[c.id]||'Tap to chat')}</small></div></div>`).join('')||'<div class="empty">No chats yet.<br>Tap ✉ to start a conversation.</div>';
+ $('chatList').querySelectorAll('[data-id]').forEach(r=>r.onclick=()=>openChat(r.dataset.id))};
+window.renderContacts=()=>{const term=($('contactSearch').value||'').toLowerCase();
+ $('contactList').innerHTML=members.filter(m=>m.uid!==user.uid&&`${m.displayName||''} ${m.username||''} ${m.phone||''}`.toLowerCase().includes(term)).map(m=>`<div class="row" data-uid="${esc(m.uid)}"><div class="avatar">${esc(ini(m.displayName||m.username))}</div><div class="info"><b>${esc(m.displayName||m.username)}</b><small>${esc(m.phone||'@'+m.username)}</small></div></div>`).join('')||'<div class="empty">No contacts found.</div>';
+ $('contactList').querySelectorAll('[data-uid]').forEach(r=>r.onclick=()=>directChat(r.dataset.uid))};
+async function directChat(other){const ids=[user.uid,other].sort(),id='dm_'+ids.join('_');
+ try{const ref=doc(db,'chats',id),s=await getDoc(ref);if(!s.exists())await setDoc(ref,{type:'direct',title:'Direct chat',memberUids:ids,lastMessage:'🔒 Chat started',createdBy:user.uid,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});openChat(id)}catch(e){alert('Could not open chat: '+(e.code||e.message))}}
+// ---------- end-to-end encryption ----------
+const b64=b=>btoa(String.fromCharCode(...new Uint8Array(b))),unb64=t=>Uint8Array.from(atob(t),c=>c.charCodeAt(0)),ECDH={name:'ECDH',namedCurve:'P-256'};
+async function ensureKeys(){
+ let k=(await localAll('keys')).find(x=>x.id==='me');
+ if(!k){const kp=await crypto.subtle.generateKey(ECDH,true,['deriveKey']);k={id:'me',priv:await crypto.subtle.exportKey('jwk',kp.privateKey),pub:await crypto.subtle.exportKey('jwk',kp.publicKey)};await localPut('keys',k)}
+ myKeys=k;try{await setDoc(doc(db,'publicKeys',user.uid),{pub:JSON.stringify(k.pub),updatedAt:serverTimestamp()})}catch(e){console.error(e)}
+ for(const m of await localAll('messages'))if(!lastTxt[m.chatId+'_t']||m.ts>lastTxt[m.chatId+'_t']){lastTxt[m.chatId]=m.text;lastTxt[m.chatId+'_t']=m.ts}
+ renderChats();
+}
+async function aesKey(other){
+ while(!myKeys)await new Promise(r=>setTimeout(r,100));
+ const s=await getDoc(doc(db,'publicKeys',other));if(!s.exists())throw Error('This contact has not opened the app yet, so no encryption key exists.');
+ const pub=await crypto.subtle.importKey('jwk',JSON.parse(s.data().pub),ECDH,false,[]),priv=await crypto.subtle.importKey('jwk',myKeys.priv,ECDH,false,['deriveKey']);
+ return crypto.subtle.deriveKey({name:'ECDH',public:pub},priv,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+function ping(){if(S.sound)try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=880;g.gain.value=.08;o.start();o.stop(a.currentTime+.12)}catch(e){}if(S.vibrate&&navigator.vibrate)navigator.vibrate(120)}
+function watchChat(id){
+ if(watchers[id])return;
+ watchers[id]=onSnapshot(collection(db,'chats',id,'messages'),async s=>{
+  for(const ch of s.docChanges()){const m=ch.doc.data();
+   if(ch.type==='removed'){if(m.senderUid===user.uid){const all=await localAll('messages'),r=all.find(x=>x.id===ch.doc.id);if(r&&!r.delivered){r.delivered=true;await localPut('messages',r);if(activeChat===id)renderMsgs()}}continue}
+   if(m.senderUid===user.uid||m.type!=='e2ee'||!m.ct)continue;
+   try{const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(m.iv)},await aesKey(m.senderUid),unb64(m.ct));
+    const rec={id:ch.doc.id,chatId:id,senderUid:m.senderUid,text:new TextDecoder().decode(pt),ts:m.createdAt?m.createdAt.toMillis():Date.now()};
+    await localPut('messages',rec);lastTxt[id]=rec.text;lastTxt[id+'_t']=rec.ts;
+    if(activeChat!==id){unread[id]=(unread[id]||0)+1;ping()}
+    try{await deleteDoc(ch.doc.ref)}catch(e){}
+    renderChats();if(activeChat===id)renderMsgs();
+   }catch(e){console.error('decrypt failed',e)}}
+ },e=>console.warn(e.code));
+}
+// ---------- chat screen ----------
+async function renderMsgs(){
+ const arr=(await localAll('messages')).filter(m=>m.chatId===activeChat).sort((a,b)=>a.ts-b.ts),box=$('chatBody');
+ box.innerHTML='<div class="lock">🔒 Messages are end-to-end encrypted and saved only on this device.</div>'+arr.map(m=>`<div class="bubble ${m.senderUid===user.uid?'mine':''}" data-id="${esc(m.id)}">${esc(m.text)}<small>${new Date(m.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}${m.senderUid===user.uid?(m.delivered?' ✓✓':' ✓'):''}</small></div>`).join('');
+ box.querySelectorAll('[data-id]').forEach(b=>b.onclick=async()=>{if(confirm('Delete this message from this device?')){await localDel('messages',b.dataset.id);renderMsgs()}});
+ box.scrollTop=box.scrollHeight;
+}
+function openChat(id){activeChat=id;const n=nameOf(otherOf(id));$('chatTitle').textContent=n;$('chatAvatar').textContent=ini(n);unread[id]=0;$('chatView').classList.add('show');renderMsgs();renderChats()}
+window.closeChat=()=>{$('chatView').classList.remove('show');activeChat=null};
+window.sendMessage=async()=>{
+ const text=$('messageInput').value.trim();if(!text||!activeChat)return;const chatId=activeChat;$('messageInput').value='';
+ try{const iv=crypto.getRandomValues(new Uint8Array(12)),ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},await aesKey(otherOf(chatId)),new TextEncoder().encode(text));
+  const ref=await addDoc(collection(db,'chats',chatId,'messages'),{ct:b64(ct),iv:b64(iv),senderUid:user.uid,type:'e2ee',createdAt:serverTimestamp()});
+  const rec={id:ref.id,chatId,senderUid:user.uid,text,ts:Date.now()};await localPut('messages',rec);lastTxt[chatId]=text;lastTxt[chatId+'_t']=rec.ts;
+  await updateDoc(doc(db,'chats',chatId),{lastMessage:'🔒 Message',updatedAt:serverTimestamp()});renderMsgs();renderChats();
+ }catch(e){alert('Message not sent: '+e.message);$('messageInput').value=text}
+};
+// ---------- backup / restore (only when the user asks) ----------
+async function pwKey(pw,salt){const b=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},b,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+window.backup=async()=>{try{
+ const pw=prompt('Choose a backup password (at least 6 characters). Without it the backup cannot be opened:');if(!pw||pw.length<6){alert('Password must be at least 6 characters.');return}
+ const data=JSON.stringify({app:'AWAN FAMILY',v:3,chats:await localAll('chats'),messages:await localAll('messages'),keys:await localAll('keys'),calls:await localAll('calls')});
+ const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),enc=await crypto.subtle.encrypt({name:'AES-GCM',iv},await pwKey(pw,salt),new TextEncoder().encode(data));
+ const out=JSON.stringify({app:'AWAN FAMILY',salt:b64(salt),iv:b64(iv),data:b64(enc)}),fname='AWAN-FAMILY-'+new Date().toISOString().slice(0,10)+'.awanbackup',P=window.Capacitor&&Capacitor.Plugins;
+ if(P&&P.Filesystem&&P.Share){const r=await P.Filesystem.writeFile({path:fname,data:out,directory:'CACHE',encoding:'utf8'});await P.Share.share({title:'AWAN FAMILY backup',url:r.uri,dialogTitle:'Save backup (Drive / Files)'})}
+ else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out]));a.download=fname;a.click()}
+}catch(e){alert('Backup failed: '+e.message)}};
+window.restoreBackup=async ev=>{const f=ev.target.files[0];if(!f)return;try{
+ const w=JSON.parse(await f.text()),pw=prompt('Backup password:');if(!pw)return;
+ const d=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(w.iv)},await pwKey(pw,unb64(w.salt)),unb64(w.data))));
+ for(const k of['chats','messages','keys','calls'])for(const x of d[k]||[])await localPut(k,x);
+ await ensureKeys();alert('Backup restored.');if(activeChat)renderMsgs()
+}catch(e){alert('Restore failed (wrong password or damaged file): '+e.message)}ev.target.value=''};
+// ---------- calls (WebRTC, signalling through Firestore) ----------
+const ICE={iceServers:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']}]};
+let pc=null,callId=null,callDoc=null,pend=[],cUnsubs=[],localStream=null,meta=null;
+async function setupPc(id,type){
+ pend=[];pc=new RTCPeerConnection(ICE);callId=id;$('callView').classList.add('show');
+ localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:type==='video'});$('localVid').srcObject=localStream;$('localVid').style.display=type==='video'?'block':'none';
+ localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));
+ pc.ontrack=e=>{$('remoteVid').srcObject=e.streams[0]};
+ pc.onicecandidate=e=>{if(e.candidate)addDoc(collection(db,'calls',id,'candidates'),{from:user.uid,c:JSON.stringify(e.candidate)})};
+ pc.onconnectionstatechange=()=>{if(pc&&pc.connectionState==='connected'){meta.at=Date.now();$('callInfo').textContent='🔒 Connected'}};
+ cUnsubs.push(onSnapshot(collection(db,'calls',id,'candidates'),s=>s.docChanges().forEach(ch=>{const d=ch.doc.data();if(ch.type!=='added'||d.from===user.uid)return;const c=JSON.parse(d.c);if(pc&&pc.remoteDescription)pc.addIceCandidate(c).catch(()=>{});else pend.push(c)})));
+ cUnsubs.push(onSnapshot(doc(db,'calls',id),async s=>{const d=s.data();if(!d||!pc)return;callDoc=d;
+  if(d.status==='ended'||d.status==='rejected'){cleanupCall();return}
+  if(d.answer&&d.callerUid===user.uid&&!pc.remoteDescription){await pc.setRemoteDescription(d.answer);pend.forEach(c=>pc.addIceCandidate(c).catch(()=>{}));pend=[]}}));
+}
+window.startCall=async type=>{
+ if(!activeChat||pc)return;const other=otherOf(activeChat);
+ try{const id='c_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);meta={peer:other,type,dir:'out',ts:Date.now(),at:0};$('acceptBtn').classList.add('hidden');$('callInfo').textContent='Calling '+nameOf(other)+'…';
+  await setupPc(id,type);const o=await pc.createOffer();await pc.setLocalDescription(o);
+  await setDoc(doc(db,'calls',id),{callerUid:user.uid,calleeUid:other,type,status:'ringing',offer:{type:o.type,sdp:o.sdp},createdAt:serverTimestamp()});
+ }catch(e){alert('Could not start call: '+e.message+' (microphone/camera permission needed)');cleanupCall()}
+};
+function listenCalls(){
+ ringStop=onSnapshot(query(collection(db,'calls'),where('calleeUid','==',user.uid),where('status','==','ringing')),s=>{
+  s.docChanges().forEach(ch=>{
+   if(ch.type==='removed'){if(!pc&&callId===ch.doc.id){logCall('missed');callId=null;$('callView').classList.remove('show')}return}
+   if(pc)return;const d=ch.doc.data();if(Date.now()-(d.createdAt?d.createdAt.toMillis():Date.now())>60000)return;
+   callId=ch.doc.id;callDoc=d;meta={peer:d.callerUid,type:d.type,dir:'in',ts:Date.now(),at:0};ping();
+   $('callInfo').textContent=(d.type==='video'?'Video':'Voice')+' call from '+nameOf(d.callerUid);$('acceptBtn').classList.remove('hidden');$('callView').classList.add('show')})
+ },e=>console.warn(e.code));
+}
+window.answerCall=async()=>{try{$('acceptBtn').classList.add('hidden');const id=callId,d=callDoc;await setupPc(id,d.type);
+ await pc.setRemoteDescription(d.offer);pend.forEach(c=>pc.addIceCandidate(c).catch(()=>{}));pend=[];
+ const a=await pc.createAnswer();await pc.setLocalDescription(a);await updateDoc(doc(db,'calls',id),{answer:{type:a.type,sdp:a.sdp},status:'accepted'});$('callInfo').textContent='Connecting…'
+}catch(e){alert('Could not answer: '+e.message);endCall()}};
+window.endCall=async()=>{const id=callId;try{if(id)await updateDoc(doc(db,'calls',id),{status:(callDoc&&callDoc.status==='ringing'&&callDoc.calleeUid===user.uid)?'rejected':'ended'})}catch(e){}cleanupCall()};
+function logCall(status){if(!meta)return;const m=meta;meta=null;localPut('calls',{id:'l_'+m.ts,peer:m.peer,type:m.type,dir:m.dir,ts:m.ts,dur:m.at?Math.round((Date.now()-m.at)/1000):0,status})}
+function cleanupCall(){logCall(meta&&meta.at?'done':(meta&&meta.dir==='in'?'declined':'no answer'));cUnsubs.forEach(f=>f());cUnsubs=[];if(localStream)localStream.getTracks().forEach(t=>t.stop());localStream=null;if(pc){pc.close();pc=null}callId=null;callDoc=null;pend=[];$('remoteVid').srcObject=null;$('callView').classList.remove('show');$('acceptBtn').classList.add('hidden')}
+async function renderCalls(){
+ const arr=(await localAll('calls')).sort((a,b)=>b.ts-a.ts);
+ $('callList').innerHTML=arr.map(c=>`<div class="row" data-p="${esc(c.peer)}"><div class="avatar">${esc(ini(nameOf(c.peer)))}</div><div class="info"><b><span style="${c.status==='missed'?'color:#e53935':''}">${esc(nameOf(c.peer))}</span><span class="time">${c.type==='video'?'🎥':'📞'}</span></b><small>${c.dir==='in'?'↙ Incoming':'↗ Outgoing'} · ${fmt(c.ts)}${c.dur?' · '+Math.floor(c.dur/60)+'m '+c.dur%60+'s':''}${c.status==='missed'?' · Missed':''}</small></div></div>`).join('')||'<div class="empty">No calls yet.<br>Open a chat and tap 📞 or 🎥.</div>';
+ $('callList').querySelectorAll('[data-p]').forEach(r=>r.onclick=async()=>{await directChat(r.dataset.p)})
+}
+// ---------- settings screen ----------
+const sw=on=>`<div class="sw ${on?'on':''}"></div>`;
+async function renderSettings(){
+ let used='…';try{const e=await navigator.storage.estimate();used=(e.usage/1048576).toFixed(1)+' MB'}catch(_){}
+ const fp=myKeys?[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(myKeys.pub.x+myKeys.pub.y)))].slice(0,12).map(b=>String(b).padStart(3,'0')).join(' '):'—';
+ const it=(k,t,sub,right)=>`<div class="item" data-k="${k}"><div>${t}${sub?`<small>${sub}</small>`:''}</div>${right||''}</div>`;
+ $('settingsBox').innerHTML=`<div class="profile"><div class="avatar">${esc(ini(profile.displayName))}</div><div><b style="font-size:18px">${esc(profile.displayName)}</b><small style="display:block;color:var(--muted)">@${esc(profile.username)}${profile.phone?' · '+esc(profile.phone):''}</small></div></div>
+ <h4>Chats</h4>${it('theme','Theme',S.theme==='system'?'System default':S.theme==='dark'?'Dark':'Light')}${it('font','Font size',S.font+' px')}${it('enter','Enter is send','Enter key sends the message',sw(S.enter))}
+ <h4>Notifications</h4>${it('sound','Message sound','Play a tone for new messages',sw(S.sound))}${it('vibrate','Vibrate','Vibrate for new messages and calls',sw(S.vibrate))}
+ <h4>Privacy &amp; security</h4>${it('enc','End-to-end encryption','Messages and calls are encrypted. Not even the server can read them.')}${it('code','Your security code',fp)}
+ <h4>Storage and data</h4>${it('used','Storage used on this device',used)}${it('backup','Back up chats','Create a password-protected backup file')}${it('restore','Restore chats','Load a backup file')}${it('wipe','Delete all local chats','Removes chats from this device only')}
+ <h4>Help</h4>${it('about','About AWAN FAMILY','Private family messenger')}${it('logout','Log out','',`<span style="color:#e53935">⎋</span>`)}`;
+ $('settingsBox').querySelectorAll('[data-k]').forEach(e=>e.onclick=()=>settingAct(e.dataset.k))
+}
+async function settingAct(k){
+ if(k==='theme'){S.theme={system:'light',light:'dark',dark:'system'}[S.theme];saveS()}
+ else if(k==='font'){S.font=S.font>=19?13:S.font+2;saveS()}
+ else if(k==='enter'||k==='sound'||k==='vibrate'){S[k]=!S[k];saveS()}
+ else if(k==='enc')alert('Messages are encrypted on your phone with keys that never leave it. The server only relays unreadable data and deletes it once delivered. Calls use encrypted WebRTC.');
+ else if(k==='code')alert('Your security code identifies your encryption key. If it changes, you logged in on a new device or reinstalled the app.');
+ else if(k==='backup')return backup();else if(k==='restore')return $('restoreFile').click();
+ else if(k==='wipe'){if(confirm('Delete ALL chats from this device? This cannot be undone unless you have a backup.')){await localClear('messages');await localClear('calls');for(const c of chats){lastTxt[c.id]='';lastTxt[c.id+'_t']=0}renderChats()}}
+ else if(k==='about')alert('AWAN FAMILY 1.0\nEnd-to-end encrypted chats and calls for the family.');
+ else if(k==='logout'){if(confirm('Log out?'))logout();return}
+ renderSettings();
+}
+</script>
+</body></html>
